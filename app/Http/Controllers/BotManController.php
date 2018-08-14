@@ -18,7 +18,7 @@ class BotManController extends Controller
         $config = [
         // Your driver-specific configuration
             "telegram" => [
-                "token" => env('TELEGRAM_TOKEN');
+                "token" => env('TELEGRAM_TOKEN')
             ]
         ];
 
