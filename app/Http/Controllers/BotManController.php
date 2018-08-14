@@ -27,7 +27,7 @@ class BotManController extends Controller
 
         // Create an instance
         $botman = BotManFactory::create($config);
-        app('botman', $botman);
+        app('botman') = $botman;
         if (file_exists('routes/botman.php')) {
             require base_path('routes/botman.php');
         }
