@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BotManController;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,3 +16,14 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/botman', 'BotManController@handle');
+$router->post('/botman', 'BotManController@handle');
+$router->get('/botman/tinker', 'BotManController@tinker');
+
+//$botman = app('botman');
+
+//$botman->hears('Hi', function ($bot) {
+//    $bot->reply('Hello!');
+//});
+//$botman->hears('Start conversation', BotManController::class.'@startConversation');
