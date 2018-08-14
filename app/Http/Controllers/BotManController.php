@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use BotMan\BotMan\BotMan;
-use BotMan\BotMan\BotManFactory;
-use BotMan\BotMan\Drivers\DriverManager;
-use Illuminate\Http\Request;
 use App\Conversations\ExampleConversation;
 
 class BotManController extends Controller
@@ -15,22 +12,7 @@ class BotManController extends Controller
      */
     public function handle()
     {
-        $config = [
-        // Your driver-specific configuration
-            "telegram" => [
-                "token" => env('TELEGRAM_TOKEN')
-            ]
-        ];
-
-        // Load the driver(s) you want to use
-        DriverManager::loadDriver(\BotMan\Drivers\Telegram\TelegramDriver::class);
-
-        // Create an instance
-        $botman = BotManFactory::create($config);
-        app('botman') = $botman;
-        if (file_exists('routes/botman.php')) {
-            require base_path('routes/botman.php');
-        }
+        $botman = app('botman');
         $botman->listen();
     }
 

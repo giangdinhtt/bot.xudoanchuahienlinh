@@ -20,10 +20,3 @@ $router->get('/', function () use ($router) {
 $router->get('/botman', 'BotManController@handle');
 $router->post('/botman', 'BotManController@handle');
 $router->get('/botman/tinker', 'BotManController@tinker');
-
-//$botman = app('botman');
-
-//$botman->hears('Hi', function ($bot) {
-//    $bot->reply('Hello!');
-//});
-//$botman->hears('Start conversation', BotManController::class.'@startConversation');
