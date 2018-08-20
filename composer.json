@@ -10,7 +10,8 @@
         "vlucas/phpdotenv": "~2.2",
         "botman/botman": "^2.4",
         "botman/tinker": "^1.0",
-        "botman/driver-telegram": "^1.5"
+        "botman/driver-telegram": "^1.5",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
