@@ -83,6 +83,7 @@ $app->singleton(
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\BotManServiceProvider::class);
 $app->register(BotMan\Tinker\TinkerServiceProvider::class);
+$app->register(App\Providers\CouchDbServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
