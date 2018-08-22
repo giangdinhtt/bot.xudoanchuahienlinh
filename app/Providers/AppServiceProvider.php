@@ -13,6 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if (!class_exists('StringHelper')) {
+            class_alias('App\Helpers\StringHelper', 'StringHelper');
+        }
     }
 }
