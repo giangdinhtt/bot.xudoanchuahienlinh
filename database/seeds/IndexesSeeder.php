@@ -14,12 +14,14 @@ class IndexesSeeder extends Seeder
         $client = app('couchdb');
         $response = null;
         $payload = [
-            'index'=>[],
+            'index'=>[
+                'fields' => ['full_name']
+            ],
             'type' => 'json',
-            'name' => 'first-name-index'
+            'name' => 'full-name-index'
         ];
         $response = $client->request('POST', '_index', [
-            'body' => json_encode($payload)
+            'json' => $payload
         ]);
     }
 }
