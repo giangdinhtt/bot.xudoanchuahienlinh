@@ -116,7 +116,7 @@ var deaccent = function (str, ignoreCase) {
     return result;
 }
 
-  var fullName = deaccent(standardize('doc.full_name'), true).toLowerCase();
+  var fullName = deaccent(standardize(doc.full_name), true).toLowerCase();
   var arr = fullName.split(' ');
   var len = arr.length;
   var keys = [];
