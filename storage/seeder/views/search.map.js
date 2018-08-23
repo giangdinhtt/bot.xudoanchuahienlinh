@@ -7,7 +7,6 @@ function (doc) {
     var emailParts = doc.email.split('@');
     if (emailParts.length > 1) emit(emailParts[0], 1);
   }
-  emit(doc._id, 1);
   emit(doc.id, 1);
 
   /*

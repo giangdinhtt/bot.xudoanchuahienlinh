@@ -63,17 +63,12 @@ class ViewsSeeder extends Seeder
 
     private function buildSearchView()
     {
+        $mapFunc = file_get_contents(storage_path('seeder/views/search.map.js'););
+        $reduceFunc = file_get_contents(storage_path('seeder/views/search.reduce.js'););
         $definition = [
             'search' => [
-                'map' => "function (doc) {\n  if (doc.full_name == undefined) return;\n  if (doc.code) emit(doc.code, 1);\n  if (doc.phone) emit(doc.phone, 1);\n  if (doc.email) {\n    emit(doc.email, 1);\n    var emailParts = doc.email.split('@');\n    if (emailParts.length > 1) emit(emailParts[0], 1);\n  }\n  emit(doc._id, 1);\n  emit(doc.id, 1);\n  var fullName = doc.full_name;\n  var arr = fullName.split(' ');\n  var len = arr.length;\n  var keys = [];\n  for (i = 0; i < len; i ++) {\n      var temp = arr[i];\n      keys.push(temp);\n      for (j = i + 1; j < len; j ++) {\n          temp += ' ' + arr[j];\n          keys.push(temp);\n      }\n  }\n  for (i = 0; i < keys.length; i ++) {\n    emit(keys[i], 1);\n  }\n}"
-            ]
-        ];
-
-        $file_path = storage_path('seeder/views/search.js');
-        $func = file_get_contents($file_path);
-        $definition = [
-            'search' => [
-                'map' => $func
+                'map' => $mapFunc,
+                'reduce' => $reduceFunc
             ]
         ];
         return $definition;
@@ -81,17 +76,10 @@ class ViewsSeeder extends Seeder
 
     private function buildDetailsView()
     {
+        $mapFunc = file_get_contents(storage_path('seeder/views/details.js'));
         $definition = [
             'details' => [
-                'map' => "function (doc) {\n  emit(doc._id, 1);\n}"
-            ]
-        ];
-
-        $file_path = storage_path('seeder/views/details.js');
-        $func = file_get_contents($file_path);
-        $definition = [
-            'details' => [
-                'map' => $func
+                'map' => $mapFunc
             ]
         ];
         return $definition;
