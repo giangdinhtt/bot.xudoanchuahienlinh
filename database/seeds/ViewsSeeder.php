@@ -63,8 +63,8 @@ class ViewsSeeder extends Seeder
 
     private function buildSearchView()
     {
-        $mapFunc = file_get_contents(storage_path('seeder/views/search.map.js'););
-        $reduceFunc = file_get_contents(storage_path('seeder/views/search.reduce.js'););
+        $mapFunc = file_get_contents(storage_path('seeder/views/search.map.js'));
+        $reduceFunc = file_get_contents(storage_path('seeder/views/search.reduce.js'));
         $definition = [
             'search' => [
                 'map' => $mapFunc,
