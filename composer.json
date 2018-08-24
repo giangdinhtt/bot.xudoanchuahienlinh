@@ -11,7 +11,9 @@
         "botman/botman": "^2.4",
         "botman/tinker": "^1.0",
         "botman/driver-telegram": "^1.5",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "botman/driver-web": "^1.5",
+        "spatie/emoji": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace App\Providers\BotMan;
 
-use BotMan\BotMan\BotMan;
+use App\Commands\CommandManager;
+use App\Commands\SearchCommand;
 use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use Illuminate\Support\ServiceProvider;
@@ -33,9 +34,12 @@ class BotManServiceProvider extends ServiceProvider
             return $botman;
         });
 
-        if (file_exists('routes/botman.php')) {
-            require base_path('routes/botman.php');
-        }
+        $this->app->singleton('command-manager', function($app) {
+            $manager = new CommandManager();
+            $manager->register(new SearchCommand());
+
+            return $manager;
+        });
     }
 
     /**
@@ -45,27 +49,8 @@ class BotManServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        foreach ($this->rglob("app/*.php", 0) as $filename)
-        {
-            if (class_exists($filename)) continue;
-            include $filename;
-            //$classes = get_declared_classes();
-            //$class = end($classes);
-
-            $commands  = array();
-            foreach(get_declared_classes() as $class){
-                if($class instanceof \App\Listeners\Bot\CommandListener) $commands[] = $class;
-            }
-            \Log::info($commands);
-
+        if (file_exists('routes/botman.php')) {
+            require base_path('routes/botman.php');
         }
-    }
-
-    public function rglob($pattern, $flags = 0) {
-        $files = glob($pattern, $flags); 
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, $this->rglob($dir.'/'.basename($pattern), $flags));
-        }
-        return $files;
     }
 }

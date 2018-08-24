@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3f3918a4b5f1f7e1cb2319e469b4868",
+    "content-hash": "cd47eaffef18bac382c7aa80b5dc9c28",
     "packages": [
         {
             "name": "botman/botman",
@@ -139,6 +139,64 @@
                 "telegram"
             ],
             "time": "2018-07-30T20:18:18+00:00"
+        },
+        {
+            "name": "botman/driver-web",
+            "version": "1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/botman/driver-web.git",
+                "reference": "7399fd2994ee4c6c14c0a69268269e81fd2cd7f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/botman/driver-web/zipball/7399fd2994ee4c6c14c0a69268269e81fd2cd7f6",
+                "reference": "7399fd2994ee4c6c14c0a69268269e81fd2cd7f6",
+                "shasum": ""
+            },
+            "require": {
+                "botman/botman": "~2.0",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "botman/driver-facebook": "dev-master",
+                "botman/studio-addons": "~1.0",
+                "ext-curl": "*",
+                "illuminate/contracts": "~5.5.0",
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BotMan\\Drivers\\Web\\Providers\\WebServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BotMan\\Drivers\\Web\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Pociot",
+                    "email": "m.pociot@gmail.com"
+                }
+            ],
+            "description": "Web driver for BotMan",
+            "homepage": "http://github.com/botman/driver-web",
+            "keywords": [
+                "Botman",
+                "bot",
+                "web"
+            ],
+            "time": "2018-03-27T10:19:41+00:00"
         },
         {
             "name": "botman/tinker",
@@ -2691,6 +2749,52 @@
                 "writable"
             ],
             "time": "2018-07-11T14:38:16+00:00"
+        },
+        {
+            "name": "spatie/emoji",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/emoji.git",
+                "reference": "4118159d432887f71628accc8bb907980e82e48e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/emoji/zipball/4118159d432887f71628accc8bb907980e82e48e",
+                "reference": "4118159d432887f71628accc8bb907980e82e48e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Emoji\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Display emoji characters",
+            "homepage": "https://github.com/spatie/emoji",
+            "keywords": [
+                "emoji",
+                "spatie"
+            ],
+            "time": "2018-07-04T23:55:57+00:00"
         },
         {
             "name": "spatie/macroable",

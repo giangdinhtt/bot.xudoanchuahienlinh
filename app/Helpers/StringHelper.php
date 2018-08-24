@@ -16,13 +16,14 @@ class StringHelper
         $string = self::standardize($string);
         $string = self::unaccents($string);
         $string = self::cleanUpSpecialChars($string);
-        return strtolower(string);
+        return strtolower($string);
     }
 
     /**
      * @param $string
+     * @return string
      */
-    private static function cleanUpSpecialChars($string)
+    public static function cleanUpSpecialChars($string)
     {
         //$string = preg_replace( array("`[^a-zA-Z0-9\$_+*'()]`i","`[-]+`") , "-", $string);
         $string = preg_replace(array("`\W`i", "`[-]+`"), "-", $string);
@@ -31,14 +32,16 @@ class StringHelper
 
     /**
      * @param $string
+     * @return string
      */
-    private static function standardize($string)
+    public static function standardize($string)
     {
         return preg_replace('/\s+/', ' ', $string);
     }
 
     /**
      * @param $string
+     * @return string
      */
     public static function deaccent($string)
     {
