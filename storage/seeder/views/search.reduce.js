@@ -1,16 +1,31 @@
 function (keys, values, rereduce) {
     if (rereduce) {
-        var count = 0;
-        var ids = [];
-        values.forEach(function (value) {
-            count += value.count;
-            ids = ids.concat(value.ids);
-        });
-        return {
-            'ids': ids.slice(0, 10),
-            'count': count,
-            'dump': values[0]
-        }
+        var stats = values.reduce(function (acc, curr) {
+            acc.count += curr.count;
+            acc.ids = acc.ids.concat(curr.ids);
+            var grades = curr.grades ? curr.grades : {};
+            var accGrade = currGrade = accCourse = currCourse = null;
+            Object.keys(grades).forEach(function(key) {
+                if (key == 'count') return;
+                if (!acc.grades[key]) acc.grades[key] = {'count': 0, 'courses': {}};
+                accGrade = acc.grades[key];
+                currGrade = grades[key];
+                accGrade.count += currGrade.count;
+
+                Object.keys(currGrade.courses).forEach(function(courseId) {
+                    if (courseId == 'count') return;
+                    if (!accGrade.courses[courseId]) accGrade.courses[courseId] = {'count': 0, 'ids': []};
+                    accCourse = accGrade.courses[courseId];
+                    currCourse = currGrade.courses[courseId];
+                    accCourse.count += currCourse.count;
+                    accCourse.ids = accCourse.ids.concat(currGrade.courses[courseId].ids);
+                });
+            });
+
+            return acc;
+        }, {'count': 0, 'ids': [], 'grades': {}});
+
+        return stats;
     } else {
         var ids = [];
         var grades = {};
@@ -19,18 +34,20 @@ function (keys, values, rereduce) {
             // key format: [key, doc_id]
             ids.push(key[1]);
         });
-        values.forEach(function (value) {
-            // key format: [grade, course, id]
-            if (!grades[value[0]]) grades[value[0]] = 0;
-            if (!courses[value[1]]) courses[value[1]] = 0;
-            grades[value[0]]++
-            courses[value[1]]++
-        });
-        return {
-            'ids': ids,
-            'count': values.length,
-            'grades': grades,
-            'courses': courses
-        }
+        // value format: [grade, course, id, doc_id]
+        var stats = values.reduce(function (acc, curr) {
+            var gradeId = curr[0];
+            var courseId = curr[1];
+            if (!acc.grades[gradeId]) acc.grades[gradeId] = {'count': 0, 'courses': {}};
+            var grade = acc.grades[gradeId];
+            if (!grade.courses[courseId]) grade.courses[courseId] = {'count': 0, 'ids': []};
+            var course = grade.courses[courseId];
+            grade.count++;
+            course.count++;
+            course.ids.push(curr[3]);
+
+            return acc;
+        }, {'count': values.length, 'ids': ids, 'grades': {}});
+        return stats;
     }
 }

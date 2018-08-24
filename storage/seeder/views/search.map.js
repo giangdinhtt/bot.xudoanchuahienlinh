@@ -2,7 +2,7 @@ function (doc) {
     if (doc.object_type == undefined || doc.object_type != 'student') return;
     if (doc.full_name == undefined) return;
 
-    var mapValue = [doc.grade, doc.course, doc.id];
+    var mapValue = [doc.grade ? doc.grade : 'none', doc.course ? doc.course : 'none', doc.id, doc._id];
 
     if (doc.code) emit(doc.code, mapValue);
     if (doc.phone) emit(doc.phone, mapValue);
