@@ -4,7 +4,7 @@ namespace App\Commands;
 
 use BotMan\BotMan\BotMan;
 
-class SearchCommand extends Command
+class SettingCommand extends Command
 {
     /**
      * Get supported commands.
@@ -12,7 +12,12 @@ class SearchCommand extends Command
      * @return array
      */
     public function getCommands() {
-        return ['search', 'tracuu', 'timkiem'];
+        return ['caidat', 'start', 'setting', 'config'];
+    }
+
+    public function isParamsRequired()
+    {
+        return false;
     }
 
     /**
@@ -22,7 +27,7 @@ class SearchCommand extends Command
      */
     public function getDescriptions()
     {
-        return 'Tìm kiếm thông tin theo tên, số điện thoại, facebook...';
+        return 'Cài đặt một số thông tin để được hỗ trợ tốt hơn';
     }
 
 
@@ -36,6 +41,6 @@ class SearchCommand extends Command
     public function handle(BotMan $bot, string $params = null)
     {
         $user = $bot->getUser();
-        $bot->reply("Hi {$user->getFirstName()}! Bạn đang tìm kiếm `$params`");
+        $bot->reply("Hi {$user->getFirstName()}! Mình cần {$user->getFirstName()} cung cấp một số thông tin để có thể hỗ trợ {$user->getFirstName()} tốt hơn `$params`");
     }
 }

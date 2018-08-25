@@ -27,11 +27,44 @@ abstract class Command
     abstract public function getCommands();
 
     /**
+     * `true` if command require parameters
+     *
+     * @return boolean
+     */
+    public function isParamsRequired()
+    {
+        return true;
+    }
+
+    /**
      * Get command descriptions
      *
      * @return string
      */
     abstract public function getDescriptions();
+
+
+    /**
+     * Get replying message for /help command
+     *
+     * @return string
+     */
+    public function getHelps()
+    {
+        $commands = $this->getCommands();
+        if (!is_array($commands)) {
+            $commands = [$commands];
+        }
+        $msg = '';
+        foreach ($commands as $cmd) {
+            $msg .= sprintf('/%s ', $cmd);
+        }
+        if ($this->isParamsRequired()) {
+            $msg .= '_<nội dung>_ ';
+        }
+        $msg .= '- ' . $this->getDescriptions();
+        return $msg;
+    }
 
     /**
      * Handle the event.

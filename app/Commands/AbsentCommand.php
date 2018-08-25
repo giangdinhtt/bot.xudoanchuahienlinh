@@ -4,7 +4,7 @@ namespace App\Commands;
 
 use BotMan\BotMan\BotMan;
 
-class SearchCommand extends Command
+class AbsentCommand extends Command
 {
     /**
      * Get supported commands.
@@ -12,7 +12,7 @@ class SearchCommand extends Command
      * @return array
      */
     public function getCommands() {
-        return ['search', 'tracuu', 'timkiem'];
+        return ['diemdanh', 'vang', 'absent'];
     }
 
     /**
@@ -22,7 +22,7 @@ class SearchCommand extends Command
      */
     public function getDescriptions()
     {
-        return 'Tìm kiếm thông tin theo tên, số điện thoại, facebook...';
+        return 'Điểm danh vắng mặt';
     }
 
 

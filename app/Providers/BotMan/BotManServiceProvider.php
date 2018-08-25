@@ -2,8 +2,10 @@
 
 namespace App\Providers\BotMan;
 
+use App\Commands\AbsentCommand;
 use App\Commands\CommandManager;
 use App\Commands\SearchCommand;
+use App\Commands\SettingCommand;
 use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use Illuminate\Support\ServiceProvider;
@@ -36,7 +38,9 @@ class BotManServiceProvider extends ServiceProvider
 
         $this->app->singleton('command-manager', function($app) {
             $manager = new CommandManager();
+            $manager->register(new SettingCommand());
             $manager->register(new SearchCommand());
+            $manager->register(new AbsentCommand());
 
             return $manager;
         });
