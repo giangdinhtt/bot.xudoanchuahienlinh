@@ -16,7 +16,7 @@ use App\Http\Controllers\BotManController;
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
-
+$router->get('/search', 'ExampleController@handle');
 $router->get('/botman', 'BotManController@handle');
 $router->post('/botman', 'BotManController@handle');
 $router->get('/botman/tinker', 'BotManController@tinker');

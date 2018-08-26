@@ -4,6 +4,16 @@ namespace App\Helpers;
 
 class StringHelper
 {
+    /**
+     * Quote a string with double quotes
+     *
+     * @param $string
+     * @return string
+     */
+    public static function quote($string)
+    {
+        return sprintf("\"$string\"");
+    }
 
     /**
      * Creates a slug to be used for pretty URLs
