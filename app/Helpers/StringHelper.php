@@ -46,7 +46,7 @@ class StringHelper
      */
     public static function standardize($string)
     {
-        return preg_replace('/\s+/', ' ', $string);
+        return trim(preg_replace('/\s+/', ' ', $string));
     }
 
     /**

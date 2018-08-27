@@ -7,7 +7,10 @@ use App\Commands\CommandManager;
 use App\Commands\SearchCommand;
 use App\Commands\SettingCommand;
 use BotMan\BotMan\BotManFactory;
+use BotMan\BotMan\Cache\LaravelCache;
+use BotMan\BotMan\Container\LaravelContainer;
 use BotMan\BotMan\Drivers\DriverManager;
+use BotMan\BotMan\Storages\Drivers\FileStorage;
 use Illuminate\Support\ServiceProvider;
 
 class BotManServiceProvider extends ServiceProvider
@@ -29,9 +32,11 @@ class BotManServiceProvider extends ServiceProvider
 
             // Load the driver(s) you want to use
             DriverManager::loadDriver(\BotMan\Drivers\Telegram\TelegramDriver::class);
+            $storage = new FileStorage(storage_path('botman'));
 
-            // Create an instance
-            $botman = BotManFactory::create($config);
+            $botman = BotManFactory::create($config, new LaravelCache(), $app->make('request'), $storage);
+
+            $botman->setContainer(new LaravelContainer($this->app));
 
             return $botman;
         });
