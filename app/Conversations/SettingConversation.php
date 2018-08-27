@@ -58,9 +58,12 @@ class SettingConversation extends Conversation
     {
         $this->ask("Số điện thoại {$this->getUserFirstName()} đang dùng là gì (số điện thoại mà {$this->getUserFirstName()} đã điền lúc đăng ký học giáo lý á)?", function (Answer $answer) {
             $this->phone = $answer->getText();
-            $this->say(Emoji::thumbsUpSign() . "Cám ơn {$this->getUserFirstName()} đã cung cấp thông tin, bây giờ {$this->getUserFirstName()} có thể dùng lệnh /help để được hỗ trợ rồi" . Emoji::huggingFace(), Command::PARSE_MODE_MARKDOWN);
-            \Log::info($this->role);
-            \Log::info($this->phone);
+            $permissionGrant = $this->checkPermission($this->role, $this->phone);
+            if ($permissionGrant) {
+                $this->say(Emoji::thumbsUpSign() . "Cám ơn {$this->getUserFirstName()} đã cung cấp thông tin, bây giờ {$this->getUserFirstName()} có thể dùng lệnh /help để được hỗ trợ rồi " . Emoji::huggingFace(), Command::PARSE_MODE_MARKDOWN);
+                return;
+            }
+            $this->say(Emoji::disappointedButRelievedFace() . " Không tìm thầy số điện thoại của {$this->getUserFirstName()} trong thông tin đăng ký " . Emoji::disappointedButRelievedFace() . "  {$this->getUserFirstName()} có thể email đến `xudoanchuahienlinh@gmail.com` với mã yêu cầu `{$this->getUserId()}` để được hỗ trợ nhé " . Emoji::huggingFace(), Command::PARSE_MODE_MARKDOWN);
         }, ['reply_markup' => json_encode([
             'keyboard' => [[['text' => 'Đồng ý cung cấp số điện thoại', 'request_contact' => true]]]
         ])]);
@@ -96,6 +99,11 @@ class SettingConversation extends Conversation
             return true;
         }
 
+        return false;
+    }
+
+    private function checkPermission($role, $phone)
+    {
         return false;
     }
 }

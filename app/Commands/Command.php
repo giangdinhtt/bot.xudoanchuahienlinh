@@ -43,7 +43,6 @@ abstract class Command
      */
     abstract public function getDescriptions();
 
-
     /**
      * Get replying message for /help command
      *
