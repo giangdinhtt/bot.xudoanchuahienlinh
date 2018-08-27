@@ -78,3 +78,15 @@ Initialize dummy students: `php artisan db:seed --class=FakeUsersSeeder`
   ),
 )
 ```
+
+Contact format:
+
+```
+'contact' => 
+    array (
+      'phone_number' => '8493XXXX',
+      'first_name' => 'Giang',
+      'last_name' => 'Dinh',
+      'user_id' => ,
+    ),
+```

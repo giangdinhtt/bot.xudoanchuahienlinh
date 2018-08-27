@@ -13,7 +13,6 @@ $botman->hears('^/(\w+)\s*([\w ]+)*$', function ($bot, $command = null, $arg = n
 });
 */
 $commandManager = app('command-manager');
-\Log::info($commandManager->getCommandPatterns());
 $botman->hears($commandManager->getCommandPatterns(), [$commandManager, 'handle']);
 
 $botman->hears('Start conversation', BotManController::class.'@startConversation');
