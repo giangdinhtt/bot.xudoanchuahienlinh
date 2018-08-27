@@ -39,21 +39,19 @@ class ViewsSeeder extends Seeder
         $views = array_merge($views, $this->buildSearchView());
         $views = array_merge($views, $this->buildDetailsView());
 
-        $this->command->info(json_encode([
-            '_id' => '_design/' . self::DESIGN_DOC,
-            '_rev' => $ddocRev,
-            'language' => 'javascript',
-            'views' => $views
-        ]));
-
         $payload = [
             '_id' => '_design/' . self::DESIGN_DOC,
             'language' => 'javascript',
-            'views' => $views
+            'views' => $views,
+            'lists' => $this->buildDetailsList()
         ];
+
         if ($ddocRev != null) {
-            $payload[_rev] = $ddocRev;
+            $payload['_rev'] = $ddocRev;
         }
+
+        $this->command->info(json_encode($payload));
+
         $response = $client->request('PUT', "_design/$ddoc", [
             'json' => $payload
         ]);
@@ -76,11 +74,23 @@ class ViewsSeeder extends Seeder
 
     private function buildDetailsView()
     {
-        $mapFunc = file_get_contents(storage_path('seeder/views/details.js'));
+        $mapFunc = file_get_contents(storage_path('seeder/views/details.map.js'));
         $definition = [
             'details' => [
                 'map' => $mapFunc
             ]
+        ];
+        return $definition;
+    }
+
+    /**
+     * http://couchdb.giang.xyz/xdchl-bot/_design/bot/_list/student/details?include_docs=true&startkey=[%221009%22]&endkey=[%221009%22,{}]
+     */
+    private function buildDetailsList()
+    {
+        $listFunc = file_get_contents(storage_path('seeder/views/details.list.js'));
+        $definition = [
+            'student' => $listFunc
         ];
         return $definition;
     }

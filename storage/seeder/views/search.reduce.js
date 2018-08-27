@@ -24,7 +24,7 @@ function (keys, values, rereduce) {
 
             return acc;
         }, {'count': 0, 'ids': [], 'grades': {}});
-
+        if (stats.ids.length > 5) stats.ids = stats.ids.slice(0, 5);
         return stats;
     } else {
         var ids = [];
