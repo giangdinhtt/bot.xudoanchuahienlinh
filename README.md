@@ -90,3 +90,26 @@ Contact format:
       'user_id' => ,
     ),
 ```
+
+# Auth user
+```
+{
+    id: 192921,
+    code
+    phone:
+    email:
+    telegram: 10298310923,
+    telegram_username: 'asdasd',
+    roles: ['parent', 'student', 'teacher'],
+    permissions: {
+        students: [123, 456],
+        courses: ['course_1', 'course_Y'],
+        grades: ['grade_1', 'grade_2']
+    },
+    is_active: 1,
+    created_at:
+    updated_at:
+    last_activity_at: '2017-12-13 00:12:30'
+    
+}
+```

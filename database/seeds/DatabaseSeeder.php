@@ -51,5 +51,6 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call('ViewsSeeder');
+        $this->call('AuthViewsSeeder');
     }
 }

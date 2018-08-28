@@ -136,7 +136,49 @@ class FakeUsersSeeder extends Seeder
     private function fakeTeachers($faker, $client)
     {
         $this->command->info('Generating teachers...');
+        $courseLen = sizeof($this->courses);
+        $teachers = [];
+        for ($i = 0; $i < 100; $i ++) {
+            $id = $i + 1;
+            $fullName = $faker->name();
+            $fullName = str_replace(".","",$fullName);
+            $courseId = $faker->numberBetween(0, $courseLen - 1);
+            $course = $this->courses[$courseId];
+            $teachers[] = [
+                '_id' => (string) $id,
+                'object_type' => 'teacher',
+                'id' => $id,
+                'first_name' => substr($fullName, 0, strpos($fullName, ' ')),
+                'last_name' => substr($fullName, strpos($fullName, ' ') + 1, strlen($fullName)),
+                'full_name' => $fullName,
+                'name' => $fullName,
+                'code' => (string) $faker->unique()->randomNumber($nbDigits = 9),
+                'phone' => ($faker->boolean ? '090' : '0122') . $faker->numberBetween(1000001, 9999999),
+                'gender' => $faker->boolean ? 1 : 0,
+                'birthday' => $faker->date(),
+                'email' => $faker->email,
+                'facebook' => $faker->userName,
+                'telegram_id' => null,
+                'telegram' => $faker->userName,
+                'course' => $course['id'],
+                'grade' => $course['grade']
+            ];
+        }
 
+        $batch = [];
+        foreach($teachers as $user) {
+            if (count($batch) < 1000) {
+                $batch[] = $user;
+            } else {
+                $this->bulkDocs($client, $batch);
+                $this->command->info('Generated ' . count($batch) . ' teachers');
+                $batch = [];
+            }
+        }
+        if (count($batch) > 0) {
+            $this->bulkDocs($client, $batch);
+            $this->command->info('Generated ' . count($batch) . ' teachers');
+        }
         $this->command->info('Generate ' . count($this->teachers) . ' teachers completed');
     }
 
@@ -165,9 +207,26 @@ class FakeUsersSeeder extends Seeder
                 'birthday' => $faker->date(),
                 'email' => $faker->email,
                 'facebook' => $faker->userName,
+                'telegram_id' => null,
                 'telegram' => $faker->userName,
                 'course' => $course['id'],
-                'grade' => $course['grade']
+                'grade' => $course['grade'],
+                'parent' => [
+                    'mother' => [
+                        'full_name' => str_replace(".","", $faker->name()),
+                        'phone' => ($faker->boolean ? '090' : '0122') . $faker->numberBetween(1000001, 9999999),
+                        'email' => $faker->email,
+                        'telegram_id' => null,
+                        'telegram' => $faker->userName
+                    ],
+                    'father' => [
+                        'full_name' => str_replace(".","", $faker->name()),
+                        'phone' => ($faker->boolean ? '090' : '0122') . $faker->numberBetween(1000001, 9999999),
+                        'email' => $faker->email,
+                        'telegram_id' => null,
+                        'telegram' => $faker->userName
+                    ],
+                ]
             ];
         }
 

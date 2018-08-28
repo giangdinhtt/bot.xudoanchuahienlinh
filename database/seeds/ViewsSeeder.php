@@ -38,9 +38,12 @@ class ViewsSeeder extends Seeder
         $views = [];
         $views = array_merge($views, $this->buildSearchView());
         $views = array_merge($views, $this->buildDetailsView());
+        $views = array_merge($views, $this->buildParentsView());
+        $views = array_merge($views, $this->buildTeachersView());
+        $views = array_merge($views, $this->buildTelegramAccountsView());
 
         $payload = [
-            '_id' => '_design/' . self::DESIGN_DOC,
+            '_id' => '_design/' . $ddoc,
             'language' => 'javascript',
             'views' => $views,
             'lists' => $this->buildDetailsList()
@@ -91,6 +94,39 @@ class ViewsSeeder extends Seeder
         $listFunc = file_get_contents(storage_path('seeder/views/details.list.js'));
         $definition = [
             'student' => $listFunc
+        ];
+        return $definition;
+    }
+
+    private function buildParentsView()
+    {
+        $mapFunc = file_get_contents(storage_path('seeder/views/parents.map.js'));
+        $definition = [
+            'parents' => [
+                'map' => $mapFunc
+            ]
+        ];
+        return $definition;
+    }
+
+    private function buildTeachersView()
+    {
+        $mapFunc = file_get_contents(storage_path('seeder/views/teachers.map.js'));
+        $definition = [
+            'teachers' => [
+                'map' => $mapFunc
+            ]
+        ];
+        return $definition;
+    }
+
+    private function buildTelegramAccountsView()
+    {
+        $mapFunc = file_get_contents(storage_path('seeder/views/telegram_accounts.map.js'));
+        $definition = [
+            'telegram_accounts' => [
+                'map' => $mapFunc
+            ]
         ];
         return $definition;
     }

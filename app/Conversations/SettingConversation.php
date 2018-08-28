@@ -2,6 +2,7 @@
 
 namespace App\Conversations;
 
+use App\Helpers\CouchDbHelper;
 use App\Commands\Command;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Incoming\IncomingMessage;
@@ -53,60 +54,7 @@ class SettingConversation extends Conversation
     }
 
     /**
-     * Reply payload
-        {
-            "message_id": 254,
-            "from": {
-                "id": 286025420,
-                "is_bot": false,
-                "first_name": "Giang",
-                "last_name": "Dinh",
-                "username": "giangdinhtt",
-                "language_code": "en-US"
-            },
-            "chat": {
-                "id": 286025420,
-                "first_name": "Giang",
-                "last_name": "Dinh",
-                "username": "giangdinhtt",
-                "type": "private"
-            },
-            "date": 1535446027,
-            "contact": {
-                "phone_number": "84932093019",
-                "first_name": "Giang",
-                "last_name": "Dinh",
-                "user_id": 286025420
-            }
-        }
-     * or
-        {
-            "message_id": 291,
-            "from": {
-                "id": 286025420,
-                "is_bot": false,
-                "first_name": "Giang",
-                "last_name": "Dinh",
-                "username": "giangdinhtt",
-                "language_code": "en-US"
-            },
-            "chat": {
-                "id": 286025420,
-                "first_name": "Giang",
-                "last_name": "Dinh",
-                "username": "giangdinhtt",
-                "type": "private"
-            },
-            "date": 1535451545,
-            "text": "84932093019",
-            "entities": [
-                {
-                "offset": 0,
-                "length": 11,
-                "type": "phone_number"
-                }
-            ]
-        }
+     *
      */
     public function askPhone()
     {
@@ -173,8 +121,21 @@ class SettingConversation extends Conversation
     }
 
     private function checkPermission($role, $phone)
-    {
-        return false;
+    {   \Log::info("$role - $phone");
+        if (!in_array($role, ['parent', 'teacher'])) return false;
+
+        $payload = CouchDbHelper::queryView('bot', $role == 'parent' ? 'parents' : 'teachers', $phone);
+        \Log::info($payload);
+        
+        $rows = $payload['rows'] ?? [];
+        $studentIds = [];
+        foreach ($rows as $row) {
+            $studentIds[] = $row['id'];
+            $parent = $row['value'];
+            $telegram = $parent['telegram'] ?? null;
+            // Need to update auth
+        }
+        return count($rows) > 0;
     }
 
     /**
