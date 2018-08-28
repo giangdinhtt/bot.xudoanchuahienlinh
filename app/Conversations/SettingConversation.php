@@ -79,26 +79,63 @@ class SettingConversation extends Conversation
                 "user_id": 286025420
             }
         }
+     * or
+        {
+            "message_id": 291,
+            "from": {
+                "id": 286025420,
+                "is_bot": false,
+                "first_name": "Giang",
+                "last_name": "Dinh",
+                "username": "giangdinhtt",
+                "language_code": "en-US"
+            },
+            "chat": {
+                "id": 286025420,
+                "first_name": "Giang",
+                "last_name": "Dinh",
+                "username": "giangdinhtt",
+                "type": "private"
+            },
+            "date": 1535451545,
+            "text": "84932093019",
+            "entities": [
+                {
+                "offset": 0,
+                "length": 11,
+                "type": "phone_number"
+                }
+            ]
+        }
      */
     public function askPhone()
     {
         $this->ask("Số điện thoại {$this->getUserFirstName()} đang dùng là gì (số điện thoại mà {$this->getUserFirstName()} đã điền lúc đăng ký học giáo lý á)?", function (Answer $answer) {
             //$this->phone = $answer->getText();
             $payload = $answer->getMessage()->getPayload();
+            \Log::error($payload);
             if (!empty($payload)) {
-                $payload = json_decode($payload, true);
-                $contact = $payload['contact'] ?? null;
-                $this->phone = $contact['phone_number'] ?? null;
-                \Log::error($this->phone);
+                $this->phone = $this->extractPhoneNumber($payload);
             }
             $permissionGrant = $this->checkPermission($this->role, $this->phone);
+            $removeKeyboard = [
+                'reply_markup' => json_encode([
+                    'remove_keyboard' => true
+                ])
+            ];
             if ($permissionGrant) {
-                $this->say(Emoji::thumbsUpSign() . "Cám ơn {$this->getUserFirstName()} đã cung cấp thông tin, bây giờ {$this->getUserFirstName()} có thể dùng lệnh /help để được hỗ trợ rồi " . Emoji::huggingFace(), Command::PARSE_MODE_MARKDOWN);
+                $this->say(Emoji::thumbsUpSign() . "Cám ơn {$this->getUserFirstName()} đã cung cấp thông tin, bây giờ {$this->getUserFirstName()} có thể dùng lệnh /help để được hỗ trợ rồi " . Emoji::huggingFace(), array_merge(Command::PARSE_MODE_MARKDOWN, $removeKeyboard));
                 return;
             }
-            $this->say(Emoji::disappointedButRelievedFace() . " Không tìm thầy số điện thoại `{$this->phone}` trong thông tin đăng ký " . Emoji::disappointedButRelievedFace() . "  {$this->getUserFirstName()} có thể email đến `xudoanchuahienlinh@gmail.com` với mã yêu cầu `{$this->getUserId()}` để được hỗ trợ nhé " . Emoji::huggingFace(), Command::PARSE_MODE_MARKDOWN);
+            $this->say(Emoji::disappointedButRelievedFace() . " Không tìm thầy số điện thoại `{$this->phone}` trong thông tin đăng ký " . Emoji::disappointedButRelievedFace() . "  {$this->getUserFirstName()} có thể email đến `xudoanchuahienlinh@gmail.com` với mã yêu cầu `{$this->getUserId()}` để được hỗ trợ nhé " . Emoji::huggingFace(), array_merge(Command::PARSE_MODE_MARKDOWN, $removeKeyboard));
         }, ['reply_markup' => json_encode([
-            'keyboard' => [[['text' => 'Đồng ý cung cấp số điện thoại', 'request_contact' => true]]]
+            'keyboard' => [
+                [
+                    ['text' => 'Đồng ý cung cấp số điện thoại', 'request_contact' => true]
+                ]
+            ],
+            'resize_keyboard' => true,
+            'one_time_keyboard' => true
         ])]);
     }
 
@@ -138,5 +175,82 @@ class SettingConversation extends Conversation
     private function checkPermission($role, $phone)
     {
         return false;
+    }
+
+    /**
+     * Message with phone
+        {
+            "message_id": 254,
+            "from": {
+                "id": 286025420,
+                "is_bot": false,
+                "first_name": "Giang",
+                "last_name": "Dinh",
+                "username": "giangdinhtt",
+                "language_code": "en-US"
+            },
+            "chat": {
+                "id": 286025420,
+                "first_name": "Giang",
+                "last_name": "Dinh",
+                "username": "giangdinhtt",
+                "type": "private"
+            },
+            "date": 1535446027,
+            "contact": {
+                "phone_number": "84932093019",
+                "first_name": "Giang",
+                "last_name": "Dinh",
+                "user_id": 286025420
+            }
+        }
+     * or
+        {
+            "message_id": 291,
+            "from": {
+                "id": 286025420,
+                "is_bot": false,
+                "first_name": "Giang",
+                "last_name": "Dinh",
+                "username": "giangdinhtt",
+                "language_code": "en-US"
+            },
+            "chat": {
+                "id": 286025420,
+                "first_name": "Giang",
+                "last_name": "Dinh",
+                "username": "giangdinhtt",
+                "type": "private"
+            },
+            "date": 1535451545,
+            "text": "84932093019",
+            "entities": [
+                {
+                "offset": 0,
+                "length": 11,
+                "type": "phone_number"
+                }
+            ]
+        }
+     */
+    private function extractPhoneNumber($payload)
+    {
+        $phone = null;
+        // case 1
+        $contact = $payload['contact'] ?? null;
+        if ($contact != null) {
+            $phone = $contact['phone_number'] ?? null;
+        } else {
+            // case 2
+            $entities = $payload['entities'] ?? [];
+            foreach ($entities as $entity) {
+                if ($entity['type'] === 'phone_number') {
+                    $phone = substr($payload['text'], (int) $entity['offset'], (int) $entity['length']);;
+                }
+            }
+        }
+
+        \Log::error('Phone: ' . $phone);
+        return $phone;
     }
 }
