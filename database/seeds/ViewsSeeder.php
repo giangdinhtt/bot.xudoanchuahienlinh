@@ -36,7 +36,7 @@ class ViewsSeeder extends Seeder
         }
 
         $views = [];
-        $views = array_merge($views, $this->buildSearchView());
+        //$views = array_merge($views, $this->buildSearchView());
         $views = array_merge($views, $this->buildDetailsView());
         $views = array_merge($views, $this->buildParentsView());
         $views = array_merge($views, $this->buildTeachersView());

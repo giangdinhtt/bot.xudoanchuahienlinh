@@ -1,5 +1,7 @@
 function (doc) {
-    if (doc.object_type == 'teacher') emit(doc._id, 1);
+    if (doc.object_type == undefined) return;
+    if (doc.object_type != 'teacher') return;
+    emit(doc._id, 1);
     if (doc.code) emit(doc.code, 1);
     if (doc.phone) emit(doc.phone, 1);
     if (doc.telegram) emit(doc.telegram, 1);

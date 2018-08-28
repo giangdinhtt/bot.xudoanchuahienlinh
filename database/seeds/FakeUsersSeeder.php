@@ -187,7 +187,7 @@ class FakeUsersSeeder extends Seeder
         $this->command->info('Generating students...');
         $courseLen = sizeof($this->courses);
         $users = [];
-        for ($i = 0; $i < 10000 ; $i ++) {
+        for ($i = 100; $i < 10000 ; $i ++) {
             $id = $i + 1;
             $fullName = $faker->name();
             $fullName = str_replace(".","",$fullName);

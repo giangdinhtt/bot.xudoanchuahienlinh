@@ -24,7 +24,7 @@ class StringHelper
     public static function getSlug($string)
     {
         $string = self::standardize($string);
-        $string = self::unaccents($string);
+        $string = self::deaccent($string);
         $string = self::cleanUpSpecialChars($string);
         return strtolower($string);
     }

@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
             $this->command->info($response->getBody());
         }
 
+        $this->call('IndexesSeeder');
         $this->call('ViewsSeeder');
         $this->call('AuthViewsSeeder');
     }
