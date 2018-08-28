@@ -1,5 +1,6 @@
 function (doc) {
-    if (doc.object_type == undefined || doc.object_type != 'student') return;
+    if (doc.object_type == undefined) return;
+    if (doc.object_type != 'teacher' && doc.object_type != 'student') return;
     if (doc.full_name == undefined) return;
 
     var mapValue = [doc.grade ? doc.grade : 'none', doc.course ? doc.course : 'none', doc.id, doc._id];
